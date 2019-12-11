@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.showSpace {
+  white-space: pre;
+}
+
+span.letra{
+  font-size: 200%;
+  color:lightgray;
+}
+
+span br {
+  display:none;
+}

@@ -1,0 +1,20 @@
+{
+  "name": "tonepoems-gridsome",
+  "private": true,
+  "scripts": {
+    "build": "gridsome build",
+    "develop": "gridsome develop",
+    "explore": "gridsome explore"
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.1.0",
+    "gridsome": "^0.7.0",
+    "tiptap": "^1.26.5",
+    "vue": "^2.6.10",
+    "vue-mutation-observer": "^0.1.2"
+  },
+  "devDependencies": {
+    "gridsome-plugin-tailwindcss": "^2.2.27"
+  }
+}
