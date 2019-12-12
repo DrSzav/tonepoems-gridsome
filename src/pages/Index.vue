@@ -4,10 +4,14 @@
 
       <h1 id="title" class="text-6xl text-center">Tone Poems</h1>
 
-      <span id="wow" ref="input" v-observer:subtree.childList="mutationHandler" contenteditable="true" @paste.prevent data-ph="Type Something..." v-on:keyup="keyupEvent"
-        v-on:keydown="keydownEvent" class="poemHolder align-middle text-3xl text-center text-gray-700 w-full h-64">
-      </span>
-
+      <div class=".DivWithScroll">
+        <div id="wow" ref="input" width="100%" v-observer:subtree.childList="mutationHandler"
+          @blur="onEdit"
+          contenteditable="plaintext-only" @paste.prevent data-ph="Type Something..." v-on:keyup="keyupEvent"
+          v-on:keydown="keydownEvent" class="poemHolder align-middle text-3xl text-center text-gray-700 w-full">
+        </div>
+        <h1>{{poemInput}}</h1>
+     </div>
 
     </div>
 
@@ -18,6 +22,7 @@
 import WebSynth from '../webAudioSynth.js';
 import EventLooper from '../EventLooper.js';
 EventLooper.start();
+let mySynth = null;
 function pasteHtmlAtCaret(html) {
     var sel, range;
     if (window.getSelection) {
@@ -78,60 +83,87 @@ export default {
   },
   data: ()=> {return {
         syncKey: EventLooper.currentStep,
-        letters: []
+        letters: [],
+        poemInput:''
     }}
   ,
   directives: { observer },
-    methods: {
-        keyupEvent(event){
-          if(event.key.length == 1){
+  mounted()
+  {
+
+      mySynth = new WebSynth('Original','C',window);
+
+  },
+  methods: {
+      keyupEvent(event){
+        if(event.key.length == 1){
+          console.log('Key pressed:', event);
+          console.log(event.timestamp);
+          console.log(event.key);
+        }},
+        keydownEvent(event) {
+          console.log(event)
+          if(event.key.length == 1 && !ignoreThis(event.key)){
+            event.preventDefault();
+            event.stopPropagation();
+            mySynth.playNote(event.keyCode);
+            let eventID = EventLooper.insertEvent(()=> {
+              mySynth.playNote.bind(mySynth,event.keyCode)();
+            });
+            //this.letters.splice(getCaretCharacterOffsetWithin( ),0,key);
+            pasteHtmlAtCaret('<span class="letra active' + eventID.stepNumber + '" contenteditable="false" class="' + eventID.functionNumber + eventID.stepNumber + '" data-functionnumber="' + eventID.functionNumber + '" data-stepnumber="' + eventID.stepNumber + '">' + event.key + '</span>');
+            //this.$forceUpdate();
+            //let timing = event.timestamp % 10000;
+
             console.log('Key pressed:', event);
-            console.log(event.timestamp);
+            console.log('timeslot:' + (event.timestamp % 10000));
             console.log(event.key);
-          }},
-          keydownEvent(event) {
-            console.log(event)
-            if(event.key.length == 1 && !ignoreThis(event.key)){
-              event.preventDefault();
-              WebSynth.playNote(event.keyCode);
-              let eventID = EventLooper.insertEvent(()=> {
-                WebSynth.playNote.bind(WebSynth,event.keyCode)();
-              });
-              //this.letters.splice(getCaretCharacterOffsetWithin( ),0,key);
-              pasteHtmlAtCaret('<span class="letra active' + eventID.stepNumber + '" contenteditable="false" class="' + eventID.functionNumber + eventID.stepNumber + '" data-functionnumber="' + eventID.functionNumber + '" data-stepnumber="' + eventID.stepNumber + '">' + event.key + '</span>');
-              this.$forceUpdate();
-              //let timing = event.timestamp % 10000;
-
-              console.log('Key pressed:', event);
-              console.log('timeslot:' + (event.timestamp % 10000));
-              console.log(event.key);
-            }
+          }
         },
-        mutationHandler(mutations){
-          console.log(EventLooper);
-          console.log(mutations);
 
-          mutations.map( recordPage => {
-            if(recordPage.removedNodes.length > 0){
-              EventLooper.deleteSpans(recordPage.removedNodes);
-            }
-          });
-        }
+        onEdit(evt){
+         var src = evt.target.innerHTML
+         console.log(src);
+         this.poemInput = src;
+       },
+          /*
+          if(event.key === "Enter"){
+            //event.preventDefault();
+            event.stopPropagation()
+            pasteHtmlAtCaret('<p> </p>')
+          }
+          */
+      mutationHandler(mutations){
+        console.log(EventLooper);
+        console.log(mutations);
+
+        mutations.map( recordPage => {
+          if(recordPage.removedNodes.length > 0){
+            EventLooper.deleteSpans(recordPage.removedNodes);
+          }
+        });
+      }
   }
 }
+
 </script>
 <style>
-
-[contentEditable=true]:empty:not(:focus):before{
-    content:attr(data-ph)
+@import url('https://fonts.googleapis.com/css?family=Lilita+One|Montserrat|Solway&display=swap');
+</style>
+<style>
+body{
+  font-family: 'Solway', serif;
 }
 
+/* [contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-ph)
+}
+*/
 .home-links a {
   margin-right: 1rem;
 }
 
 .activeLetter{
-
   -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
   -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
   animation-name: example;
@@ -145,17 +177,17 @@ export default {
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes example {
   from {color: black;
-  font-size: 220%;}
+  transform: scale(1.5);}
   to {color: lightgray;
-  font-size: 200%;}
+  transform: scale(.9)}
 }
-
+/*{transform: scale(1.5);}*/
 /* Standard syntax */
 @keyframes example {
   from {color: black;
-  font-size: 220%;}
+  transform: scale(1.5);}
   to {color: lightgray;
-  font-size: 200%;}
+  transform: scale(.9)}
 }
 
 </style>

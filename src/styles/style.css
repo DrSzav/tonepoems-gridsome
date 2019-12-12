@@ -1,16 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css?family=Lilita+One|Montserrat&display=swap');
 
 .showSpace {
   white-space: pre;
 }
 
+
 span.letra{
-  font-size: 200%;
+
+  font-size: 150%;
   color:lightgray;
+  display: inherit;
 }
 
 span br {
   display:none;
+}
+
+.DivWithScroll {
+    height:420px;
+    overflow:scroll;
+    overflow-x:hidden;
+}
+
+#wow{
+  display: inline-block;
 }

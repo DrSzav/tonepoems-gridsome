@@ -1,10 +1,10 @@
 
 
 
-class polyNoteClass {
+class PolyNoteClass {
   constructor(myAudioContext,freq,volume,tempo){
     var PN = this;
-    this.noteLevel = volume / 100;
+    this.noteLevel = volume / 50;
 
     this.tempo = tempo;
     //Constructor
@@ -15,10 +15,10 @@ class polyNoteClass {
     this.gainNode.gain.value = 0;
 
     this.osc1 = myAudioContext.createOscillator();
-    this.osc1.type = 'square';
+    this.osc1.type = 'sine';
     this.osc1.frequency.value = freq;
     this.osc2 = myAudioContext.createOscillator();
-    this.osc2.type = 'triangle';
+    this.osc2.type = 'sine';
     this.osc2.frequency.value = freq2;
     this.gainNode.connect(myAudioContext.destination);
     this.osc1.connect(this.gainNode);
@@ -35,8 +35,8 @@ class polyNoteClass {
   attackEnvelope(){
     this.currentLevel = 0;
     this.attackStep = 0;
-    this.attackRate = .1;
-    this.noteLevel = .001;
+    this.attackRate = 1;
+    this.noteLevel = .02;
     this.attackID = setInterval( this.attackInterval.bind(this),10);
     //  self.attackID = attackID;
   }
@@ -57,7 +57,7 @@ class polyNoteClass {
  decayEnvelope(){
     this.currentLevel = 0;
     this.decayStep = 0;
-    this.decayRate = this.tempo / 6000;
+    this.decayRate = this.tempo / 16000;
     this.decayID = setInterval(this.decayInterval.bind(this),10);
 
   }
@@ -87,14 +87,14 @@ class polyNoteClass {
 }
 
 class WebAudioSynth {
-  constructor(noteScale,noteKey){
+  constructor(noteScale,noteKey,window){
+    this.window = window;
     this._keys = ['A','A#','B','C','C#','D','D#','E','F','F#','G','G#'];
-    this._Scales = {'Chromatic':[0,1,2,3,4,5,6,7,8,9,10,11], 'Original':[0,2,3,5,7,10] };
-
+    this._Scales = {'Chromatic':[0,1,2,3,4,5,6,7,8,9,10,11], 'Original':[0,3,5,7,10] };
     this.key = this._keys.indexOf(noteKey);
     this.scale = this._Scales[noteScale];
-    window.addEventListener('touchend',this.registerAudio.bind(this));
-    window.addEventListener('mouseup',this.registerAudio.bind(this));
+    this.window.addEventListener('touchend',this.registerAudio.bind(this));
+    this.window.addEventListener('mouseup',this.registerAudio.bind(this));
     document.addEventListener('visibilitychange', () => {
       if(this.audioCtx && this.audioCtx.state !== 'closed') {
         this.pause(); // change tab text for demo
@@ -104,7 +104,7 @@ class WebAudioSynth {
 
   registerAudio() {
     if(!this.AudioCtx){
-      AudioContext = window.AudioContext || window.webkitAudioContext;
+      AudioContext = this.window.AudioContext || this.window.webkitAudioContext;
       var audioCtx = new AudioContext();
       this.AudioCtx = audioCtx;
 
@@ -123,7 +123,7 @@ class WebAudioSynth {
   playNote(note){
     let scaledNote = this.noteToScale(note);
     let freq = this.noteToFrequency(scaledNote)
-    new polyNoteClass(this.AudioCtx,freq,10,120);
+    new PolyNoteClass(this.AudioCtx,freq,10,120);
   }
 
   stopAudio(){
@@ -155,7 +155,8 @@ class WebAudioSynth {
 
 }
 
-const instance = new WebAudioSynth('Original','C');
+//const instance = new WebAudioSynth('Original','C');
 //Object.freeze(instance);
 
-export default instance;
+//export default instance;
+export default WebAudioSynth;
