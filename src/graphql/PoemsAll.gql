@@ -1,0 +1,10 @@
+query poemsAll {
+	allPoems {
+		edges{
+      node{
+        innerText
+        innerHTML
+      }
+    }
+	}
+}

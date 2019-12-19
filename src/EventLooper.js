@@ -4,6 +4,7 @@
 class EventLooper {
   //Sync Interval in milliseconds, suggested be greater than 4;
   constructor(syncInterval = 10,stepCount = 1000){
+      this.nowPlaying = false;
       this.syncInterval = syncInterval;
       this.currentStep = 0;
       this.curentObj = {currentStep:0};
@@ -12,9 +13,13 @@ class EventLooper {
   }
 
   start(){
+    this.nowPlaying = true;
     this.intervalID = setInterval(this.step.bind(this),this.syncInterval)
   }
 
+  reset(){
+    this.loopArray = Array.apply(null, Array(this.stepCount)).map(function () { return []});
+  }
 
   step(){
     let events = this.loopArray[this.currentStep];
@@ -58,6 +63,12 @@ class EventLooper {
     return {stepNumber:this.currentStep, functionNumber:newLen - 1}
   }
 
+  insertEventAt(event,stepNumber){
+    let newLen = this.loopArray[stepNumber].push(event);
+    //Simple Hash for event position
+    return {functionNumber:newLen - 1}
+  }
+
   deleteSpans(deletedSpans){
     console.log(deletedSpans);
     let len = deletedSpans.length;
@@ -73,6 +84,7 @@ class EventLooper {
   }
 
   stop(){
+    this.nowPlaying = false;
     clearInterval(this.intervalID);
   }
 

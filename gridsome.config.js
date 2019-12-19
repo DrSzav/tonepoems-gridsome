@@ -10,24 +10,12 @@ module.exports = {
     {
       use: 'gridsome-plugin-tailwindcss'
     },
-    {
-     use: '@gridsome/source-filesystem',
-     options: {
-       path: 'posts/**/*.md',
-       typeName: 'Post',
-       remark: {
-         plugins: [
-           // ...local plugins
-         ]
-       }
-     }
-   },
-   {
+  /* {
      use: `gridsome-plugin-netlify-cms`,
      options: {
        publicPath: `/admin`
      }
-   },
+   },*/
   ],
   transformers: {
     remark: {
@@ -39,4 +27,16 @@ module.exports = {
       ]
     }
   },
+  configureWebpack: {
+    // merged with the internal config
+    module: {
+      rules: [
+        {
+          test: /\.(gql|graphql)$/,
+          loader: 'graphql-tag/loader'
+        }
+      ]
+    }
+  }
+
 }

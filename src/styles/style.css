@@ -11,7 +11,7 @@
 span.letra{
 
   font-size: 150%;
-  color:lightgray;
+  color:gray;
   display: inherit;
 }
 
@@ -27,4 +27,30 @@ span br {
 
 #wow{
   display: inline-block;
+}
+
+.activeLetter{
+  -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+  animation-name: example;
+  animation-duration: 2s;
+}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes example {
+  from {color: black;
+  transform: scale(1.5);}
+  to {color: gray;
+  transform: scale(.9)}
+}
+/*{transform: scale(1.5);}*/
+/* Standard syntax */
+@keyframes example {
+  from {color: black;
+  transform: scale(1.5);}
+  to {color: gray;
+  transform: scale(.9)}
+}
+
+.box-shadow{
+  box-shadow: 0 10px 10px rgba(0,0,0,.1);
 }

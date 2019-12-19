@@ -1,0 +1,7 @@
+mutation createPoem ($innerText: String!,$innerHTML: String!) {
+	createPoem (innerText: $innerText, innerHTML:$innerHTML) {
+		id
+		innerText
+    innerHTML
+	}
+}

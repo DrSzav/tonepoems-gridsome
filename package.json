@@ -9,16 +9,30 @@
   "dependencies": {
     "@gridsome/source-filesystem": "^0.6.2",
     "@gridsome/transformer-remark": "^0.4.0",
+    "apollo-boost": "^0.4.4",
+    "apollo-client": "1.9.3",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.1.0",
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.1",
     "gridsome": "^0.7.0",
     "gridsome-plugin-netlify-cms": "^1.0.9",
     "netlify-cms": "^2.9.7",
     "tiptap": "^1.26.5",
+    "ulid": "^2.3.0",
     "vue": "^2.6.10",
-    "vue-mutation-observer": "^0.1.2"
+    "vue-apollo": "^3.0.2",
+    "vue-goodshare": "^1.3.2",
+    "vue-gun": "^0.0.3",
+    "vue-mutation-observer": "^0.1.2",
+    "vue-social-sharing": "^2.4.7",
+    "vuelidate": "^0.7.4",
+    "vuex": "^3.1.2",
+    "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
-    "gridsome-plugin-tailwindcss": "^2.2.27"
+    "gridsome-plugin-tailwindcss": "^2.2.27",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0"
   }
 }

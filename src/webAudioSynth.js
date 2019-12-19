@@ -18,7 +18,7 @@ class PolyNoteClass {
     this.osc1.type = 'sine';
     this.osc1.frequency.value = freq;
     this.osc2 = myAudioContext.createOscillator();
-    this.osc2.type = 'sine';
+    this.osc2.type = 'square';
     this.osc2.frequency.value = freq2;
     this.gainNode.connect(myAudioContext.destination);
     this.osc1.connect(this.gainNode);
@@ -57,7 +57,7 @@ class PolyNoteClass {
  decayEnvelope(){
     this.currentLevel = 0;
     this.decayStep = 0;
-    this.decayRate = this.tempo / 16000;
+    this.decayRate = this.tempo / 6000;
     this.decayID = setInterval(this.decayInterval.bind(this),10);
 
   }

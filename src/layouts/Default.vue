@@ -22,8 +22,9 @@ query {
 </static-query>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Lilita+One|Montserrat|Solway&display=swap');
 body {
-  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-family: 'Solway', serif;
   margin:0;
   padding:0;
   line-height: 1.5;
@@ -51,4 +52,13 @@ body {
 .showSpace{
   white-space: pre-wrap;
 }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
 </style>
