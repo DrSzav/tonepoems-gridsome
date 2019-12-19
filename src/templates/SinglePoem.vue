@@ -47,7 +47,7 @@ export default {
     return {
       poem: null,
       shareOn: false,
-      playing: EventLooper.nowPlaying
+      playing: false
     }
   },
   components: {
@@ -64,6 +64,7 @@ export default {
       EventLooper.stop();
     },
     getPoem(id){
+      EventLooper.stop();
       this.$gun.get('allpoems').get(id).on((poem)=>{
         this.poem = poem;
 
@@ -99,7 +100,7 @@ export default {
  },
  beforeRouteUpdate (to, from, next) {
      this.getPoem(to.params.id);
-     EventLooper.stop();
+
      next();
  }
 }
