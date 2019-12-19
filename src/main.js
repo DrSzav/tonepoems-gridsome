@@ -10,7 +10,7 @@ import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 import VueGun from 'vue-gun';
 import SocialSharing from 'vue-social-sharing';
-
+import logo from '~/assets/img/sitelogo.png'
 export default function (Vue, { router, head, isClient, appOptions}) {
   // Set default layout as a global component
   console.log(router);
@@ -23,5 +23,9 @@ export default function (Vue, { router, head, isClient, appOptions}) {
   //Vue.use(ApolloProvider);
   //appOptions.ApolloProvider = ApolloProvider;
   Vue.component('Layout', DefaultLayout);
+  head.meta.push({name:'og:description',content:'Create and share short poems and messages.'});
+  head.meta.push({name:'og:title',content:'Tone Poems'});
+  console.log(logo)
+  head.meta.push({name:'og:image',content:'falsesoap.com/assets/img/sitelogo.png'});
 
 }
