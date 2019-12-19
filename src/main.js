@@ -26,6 +26,6 @@ export default function (Vue, { router, head, isClient, appOptions}) {
   head.meta.push({name:'og:description',content:'Create and share short poems and messages.'});
   head.meta.push({name:'og:title',content:'Tone Poems'});
   console.log(logo)
-  head.meta.push({name:'og:image',content:'falsesoap.com/assets/img/sitelogo.png'});
+  head.meta.push({name:'og:image',content:'https://firebasestorage.googleapis.com/v0/b/images-1ab6b.appspot.com/o/favicon.png?alt=media&token=c6173569-4e0c-44d1-a721-870c766858cc'});
 
 }
