@@ -16,7 +16,7 @@ export default function (Vue, { router, head, isClient, appOptions}) {
   console.log(router);
   Vue.use(Vuelidate);
   Vue.use(VueGun, {
-    peers: ['vigilant-newton-972381.netlify.com/gun']
+    peers: ['https://gun-super-peer.unubo.app/gun']
   });
   Vue.use(SocialSharing);
 
