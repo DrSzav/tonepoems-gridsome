@@ -2,8 +2,8 @@
   <Layout>
     <div id="mainBlock" class="container">
 
-      <h1 id="title" class="text-6xl text-center">Tone Poems</h1>
-
+      <h1 id="title" class="text-6xl text-center">New Poem</h1>
+      <h1 id="title" class="text-1xl text-center">type something below:</h1>
       <div class=".DivWithScroll text-center">
         <div id="wow" ref="input" width="100%" v-observer:subtree.childList="mutationHandler"
           @blur="onEdit"
@@ -65,7 +65,7 @@ function ignoreThis(key){
 
 export default {
   metaInfo: {
-    title: 'Hello, world!'
+    title: 'Tone Poems Home'
   },
   components: {
     RecentPoems
@@ -92,9 +92,11 @@ export default {
   directives: { observer },
   mounted()
   {
-
-      mySynth = new WebSynth('Original','C',window);
-
+      if(!this.mySynth){
+        this.mySynth = new WebSynth('Original','C',window);
+      }
+      EventLooper.reset();
+      console.log('mounted')
   },
   methods: {
     updatePoem (e) {
@@ -107,19 +109,18 @@ export default {
         console.log(event.key);
     }},
     keydownEvent(event) {
+      if(!EventLooper.nowPlaying){
+        EventLooper.start();
+      }
       console.log(event)
       if(event.key.length == 1 && !ignoreThis(event.key)){
         event.preventDefault();
         event.stopPropagation();
-        mySynth.playNote(event.keyCode);
+        this.mySynth.playNote(event.keyCode);
         let eventID = EventLooper.insertEvent(()=> {
-          mySynth.playNote.bind(mySynth,event.keyCode)();
+          this.mySynth.playNote.bind(this.mySynth,event.keyCode)();
         });
-        //this.letters.splice(getCaretCharacterOffsetWithin( ),0,key);
         pasteHtmlAtCaret('<span class="letra active' + eventID.stepNumber + '" contenteditable="false" class="' + eventID.functionNumber + eventID.stepNumber + '" data-functionnumber="' + eventID.functionNumber + '" data-stepnumber="' + eventID.stepNumber + '">' + event.key + '</span>');
-        //this.$forceUpdate();
-        //let timing = event.timestamp % 10000;
-
         console.log('Key pressed:', event);
         console.log('timeslot:' + (event.timestamp % 10000));
         console.log(event.key);
@@ -127,20 +128,9 @@ export default {
       },
 
     onEdit(evt){
-//      console.log('saving')
      this.innerHTML = evt.target.innerHTML;
      this.innerText = evt.target.innerText
-     //console.log(src);
-     //this.$store.commit('updatePoem',src);
-     //console.log(this.$apollo)
     },
-          /*
-          if(event.key === "Enter"){
-            //event.preventDefault();
-            event.stopPropagation()
-            pasteHtmlAtCaret('<p> </p>')
-          }
-          */
     mutationHandler(mutations){
       console.log(EventLooper);
       console.log(mutations);
@@ -151,20 +141,20 @@ export default {
         }
       });
     },
+    savePoem() {
 
-  savePoem() {
-
-    const text = this.innerText;
-    const html = this.innerHTML;
-    const newID =  ulid();
-    this.$gun.get('allpoems').get(newID).put({innerText:text, innerHTML: html });
-    this.$router.push({path:'/' + newID }); 
-    //console.log(this.$gun.get('allpoems').map())
+      const text = this.innerText;
+      const html = this.innerHTML;
+      const newID =  ulid();
+      this.$gun.get('allpoems').get(newID).put({innerText:text, innerHTML: html });
+      this.$router.push({path:'/' + newID });
+      //console.log(this.$gun.get('allpoems').map())
+    },
   },
-
-
-
-  }
+  beforeRouteUpdate (to, from, next) {
+    console.log('route change')
+     EventLooper.reset();
+  },
 }
 
 </script>

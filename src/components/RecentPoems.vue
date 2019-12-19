@@ -36,7 +36,7 @@ export default {
          // add results straight to the Vue component state
          // and get updates when nodes are updated by GUN
          console.log(node)
-         node.id = key;
+         //node.id = key;
         // this.allpoems[key] = node;
          Vue.set( this.allpoems, key, node )
      });

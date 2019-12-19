@@ -94,11 +94,9 @@ export default {
     this.getPoem(this.$route.params.id);
     mySynth = new WebSynth('Original','C',window);
   },
-  updated(){
-   console.log('updated')
-
- },
  beforeRouteUpdate (to, from, next) {
+   console.log('route change')
+    EventLooper.reset();
      this.getPoem(to.params.id);
 
      next();
