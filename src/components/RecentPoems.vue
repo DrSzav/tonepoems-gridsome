@@ -7,9 +7,9 @@
     <div  class="flex flex-wrap">
 
 
-      <div v-for="poem in poemArray" :key="poem.id" class="p-2 w-4/12 w-32 h-32 text-center overflow-hidden ">
+      <div v-for="poem in poemArray" :key="poem.id" class="p-2 w-4/12 w-32 h-32 text-center ">
         <a :href="poem.id" class="box-shadow hover:bg-gray-100 h-full justify-center flex-col flex rounded flex justify-center">
-          <div class="h-auto"><h2>{{ poem.innerText }}</h2></div>
+          <div class="h-auto  overflow-hidden"><h2>{{ poem.innerText }}</h2></div>
         </a>
       </div>
     </div>
@@ -47,7 +47,9 @@ export default {
       //this.allpoems = this.$gun.get('allpoems');
       let mypoems = [];
       for(var key in this.allpoems) {
-        mypoems.push({id:key,innerHTML:this.allpoems[key].innerHTML,innerText:this.allpoems[key].innerText});
+        if(this.allpoems[key] && this.allpoems[key].innerHTML ){
+          mypoems.push({id:key,innerHTML:this.allpoems[key].innerHTML,innerText:this.allpoems[key].innerText});
+        }
       }
       /*
       this.$gun.get('allpoems').map().on((node, key) => {

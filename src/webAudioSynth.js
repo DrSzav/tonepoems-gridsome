@@ -57,7 +57,7 @@ class PolyNoteClass {
  decayEnvelope(){
     this.currentLevel = 0;
     this.decayStep = 0;
-    this.decayRate = this.tempo / 6000;
+    this.decayRate = this.tempo / 3000;
     this.decayID = setInterval(this.decayInterval.bind(this),10);
 
   }
@@ -142,7 +142,7 @@ class WebAudioSynth {
   };
 
   noteToFrequency(note){
-    note = note - 24; // zero semitone difference at A;
+    note = note - 36; // zero semitone difference at A;
     return Math.pow(2,note/12) * 440;
   }
 

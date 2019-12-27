@@ -19,6 +19,7 @@ class EventLooper {
 
   reset(){
     this.loopArray = Array.apply(null, Array(this.stepCount)).map(function () { return []});
+    this.currentStep = 0;
   }
 
   step(){
@@ -80,7 +81,12 @@ class EventLooper {
   }
 
   deleteEvent(stepNumber,functionNumber){
+    try{
      this.loopArray[stepNumber].splice(functionNumber,1);
+   }
+   catch(e){
+
+   }
   }
 
   stop(){

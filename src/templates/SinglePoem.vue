@@ -97,6 +97,7 @@ export default {
  beforeRouteUpdate (to, from, next) {
    console.log('route change')
     EventLooper.reset();
+    EventLooper.stop();
      this.getPoem(to.params.id);
 
      next();

@@ -2,19 +2,7 @@
 
   <div class="layout">
     <header class="header">
-      <head>
-    <!-- Open Graph -->
-        <meta name="og:title" content="Tone Poems" />
-        <meta
-          name="og:description"
-          content="For creating and sharing short poems and messages."
-        />
-        <meta name="og:type" content="article" />
-        <meta
-          name="og:image"
-          content="/favicon.png"
-        />
-      </head>
+
       <strong>
         <g-link to="/">{{ $static.metadata.siteName }}</g-link>
       </strong>
