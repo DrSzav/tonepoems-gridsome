@@ -1,12 +1,16 @@
 <template>
   <Layout>
     <div id="mainBlock" class="container">
+      <modal name="touch-me">
+  just touch this button...
 
+  </modal>
       <h1 id="title" class="text-6xl text-center">New Poem</h1>
       <h1 id="title" class="text-1xl text-center">type something below:</h1>
       <div class=".DivWithScroll text-center">
+
         <div id="wow" ref="input" width="100%" v-observer:subtree.childList="mutationHandler"
-          @blur="onEdit"
+          @blur="onEdit" :focus="onfocus"
           contenteditable="plaintext-only" @paste.prevent data-ph="Type Something..." v-on:keyup="keyupEvent"
           v-on:keydown="keydownEvent" class="
           h-auto min-h-32 poemHolder align-middle text-3xl text-center
@@ -15,6 +19,9 @@
 
           ">
         </div>
+
+        <SimpleKeyboard v-responsive.md.sm.xs @onKeyPress="onKeyPress"/>
+        <div class="simple-keyboard"></div>
         <div class="m-12">
         <button  v-on:click="savePoem" class="bg-white hover:bg-gray-100 text-gray font-semibold py-2 px-4 border border-gray-400 rounded shadow">
           Save + Share
@@ -31,12 +38,13 @@
 
 
 <script>
+//import Keyboard from "simple-keyboard";
 import gql from 'graphql-tag';
 import POEMS_CREATE from '~/graphql/CreatePoem.gql';
 import POEMS_ALL 		from '../graphql/PoemsAll.gql';
 import { ulid } from 'ulid'
 
-
+//SimpleKey = new SimpleKeyboard();
 const todoItemsQuery = gql`
   {
     clientSide @client {
@@ -49,7 +57,7 @@ const todoItemsQuery = gql`
 //<span v-for="letter in letters" v-bind:class="{ active: stepNumber === syncKey }" contenteditable="false">{{letter}}</span>
 import WebSynth from '../webAudioSynth.js';
 import EventLooper from '../EventLooper.js';
-import {pasteHtmlAtCaret} from '../helperFunctions.js';
+import {pasteHtmlAtCaret, isTouchDevice} from '../helperFunctions.js';
 import { observer } from 'vue-mutation-observer';
 import RecentPoems from '~/components/RecentPoems.vue';
 //import apolloProvider from '~/apollo.js';
@@ -57,18 +65,28 @@ import { required, minLength, between } from 'vuelidate/lib/validators';
 EventLooper.reset();
 EventLooper.start();
 let mySynth = null;
+import SimpleKeyboard from '~/components/SimpleKeyboard.vue'
+
+let mobile = window.innerWidth > 990 ? true : false;
+
 
 function ignoreThis(key){
-  return [' '].indexOf(key) > -1 ? true : false;
+  return [' '].indexOf (key) > -1 ? true : false;
 }
 
+function getSelectionStart() {
+  var node = document.getSelection().anchorNode;
+  return (node.nodeType == 3 ? node.parentNode : node);
+}
 
 export default {
   metaInfo: {
     title: 'Tone Poems Home'
   },
   components: {
-    RecentPoems
+    RecentPoems,
+    SimpleKeyboard
+
   },
   data: ()=>
     {
@@ -76,7 +94,9 @@ export default {
           syncKey: EventLooper.currentStep,
           letters: [],
           innerHTML:'',
-          innerText:''
+          innerText:'',
+          width:document.width
+
       }
     },
   validations: {
@@ -89,16 +109,83 @@ export default {
       minLength: minLength(1)
     }
   },
+
   directives: { observer },
+  computed: {
+    onfocus: function () {
+
+      // `this` points to the vm instance
+      if(mobile){
+        return ()=>{
+            console.log('do something')
+            this.$refs.input.blur();
+          }
+      }
+      else{
+        return function(){
+          console.log('do nothing')
+        }
+      }
+    },
+    contenteditable: function(){
+      if(mobile){
+      return
+        'false'
+      }
+      else{
+        return 'contenteditable'
+      }
+  },
+  readonly: function(){
+    if(mobile){
+      console.log('readonly')
+    return
+      'readonly'
+    }
+    else{
+      console.log('not read only')
+      return 'false'
+    }
+}
+
+  },
   mounted()
   {
       if(!this.mySynth){
         this.mySynth = new WebSynth('Original','C',window);
       }
       EventLooper.reset();
-      console.log('mounted')
+      console.log('mounted');
+      this.$refs.input.focus();
+
+      this.$modal.show('dialog', {
+        title: 'somewhat important',
+        text: 'touch any button to begin...',
+        buttons: [
+          {
+            title: 'just touch Me ;)',
+        //    handler: () => { alert('great job! you touched the good button :)') }
+          },
+          {
+            title: 'do not touch',       // Button title
+            default: true,    // Will be triggered by default if 'Enter' pressed.
+        //    handler: () => { alert('Wow, you touched the wrong button')   } // Button click handler
+          },
+          {
+            title: 'close'
+          }
+       ]
+     })
   },
   methods: {
+    onFocusFunction(){
+      if(isTouchDevice()){
+          blur();
+      }
+      else{
+
+      }
+    },
     updatePoem (e) {
       this.$store.commit('updatePoem', e.target.value)
     },
@@ -109,10 +196,13 @@ export default {
         console.log(event.key);
     }},
     keydownEvent(event) {
+      this.$refs.input.focus();
+
       if(!EventLooper.nowPlaying){
         EventLooper.start();
       }
-      console.log(event)
+      //console.log(event)
+      console.log(event.key);
       if(event.key.length == 1 && !ignoreThis(event.key)){
         event.preventDefault();
         event.stopPropagation();
@@ -123,9 +213,56 @@ export default {
         pasteHtmlAtCaret('<span class="letra active' + eventID.stepNumber + '" contenteditable="false" class="' + eventID.functionNumber + eventID.stepNumber + '" data-functionnumber="' + eventID.functionNumber + '" data-stepnumber="' + eventID.stepNumber + '">' + event.key + '</span>');
         console.log('Key pressed:', event);
         console.log('timeslot:' + (event.timestamp % 10000));
-        console.log(event.key);
+
+        return;
         }
-      },
+        if(event.key == 'Enter'){
+          event.preventDefault();
+          event.stopPropagation();
+          pasteHtmlAtCaret('\n');
+          return
+        }
+    },
+    onKeyPress(button){
+
+    //let node = document.activeElement;
+  //  if(node.id != 'wow'){
+      this.$refs.input.focus();
+  //  }
+
+          if(!EventLooper.nowPlaying){
+            EventLooper.start();
+          }
+          if(button == '{space}'){
+            pasteHtmlAtCaret(' ');
+            return
+          }
+          if(button == '{backspace}'){
+            let node = document.getSelection().anchorNode;
+            let anchorOffset = document.getSelection().anchorOffset;
+            console.log(node);
+            console.log(node.childNodes)
+            let toDel = node.childNodes[anchorOffset - 1];
+            toDel.parentNode.removeChild(toDel);
+
+            //if(node.parentNode.classList.contains('poemHolder'))
+            //node.parentNode.removeChild(node);
+            return;
+          }
+          if(button == '{ent}'){
+            pasteHtmlAtCaret('\n');
+            return;
+          }
+          let charCode =  button.charCodeAt(0);
+          this.mySynth.playNote(charCode);
+          let eventID = EventLooper.insertEvent(()=> {
+            this.mySynth.playNote.bind(this.mySynth,charCode)();
+          });
+          pasteHtmlAtCaret('<span readonly="readonly" tabindex="0" class="letra active' + eventID.stepNumber + '" contenteditable="false" class="' + eventID.functionNumber + eventID.stepNumber + '" data-functionnumber="' + eventID.functionNumber + '" data-stepnumber="' + eventID.stepNumber + '">' + button + '</span>');
+          console.log(button)
+    //    }
+    },
+
 
     onEdit(evt){
      this.innerHTML = evt.target.innerHTML;

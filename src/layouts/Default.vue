@@ -1,6 +1,7 @@
 <template>
 
   <div class="layout">
+    <v-dialog/>
     <header class="header">
 
       <strong>
