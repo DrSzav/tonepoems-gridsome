@@ -10,8 +10,8 @@
       <div class=".DivWithScroll text-center">
 
         <div id="wow" ref="input" width="100%" v-observer:subtree.childList="mutationHandler"
-          @blur="onEdit" :focus="onfocus"
-          contenteditable="plaintext-only" @paste.prevent data-ph="Type Something..." v-on:keyup="keyupEvent"
+          @blur="onEdit" @focus="mobile ? $event.target.blur() : null"
+          contenteditable="contenteditable" @paste.prevent data-ph="Type Something..." v-on:keyup="keyupEvent"
           v-on:keydown="keydownEvent" class="
           h-auto min-h-32 poemHolder align-middle text-3xl text-center
           text-gray-700 w-full py-2 px-4 border-transparent
@@ -112,6 +112,10 @@ export default {
 
   directives: { observer },
   computed: {
+    mobile: ()=>{
+      return window.innerWidth < 990;
+      }
+    ,
     onfocus: function () {
 
       // `this` points to the vm instance
@@ -237,6 +241,9 @@ export default {
             pasteHtmlAtCaret(' ');
             return
           }
+          if(button == '{shift}'){
+            return
+          }
           if(button == '{backspace}'){
             let node = document.getSelection().anchorNode;
             let anchorOffset = document.getSelection().anchorOffset;
@@ -250,7 +257,7 @@ export default {
             return;
           }
           if(button == '{ent}'){
-            pasteHtmlAtCaret('\n');
+            pasteHtmlAtCaret('\r');
             return;
           }
           let charCode =  button.charCodeAt(0);
@@ -312,6 +319,7 @@ export default {
 
 .poemHolder{
   display: block;
+  white-space:pre-wrap;
 }
 
 </style>
