@@ -1,12 +1,11 @@
 <template>
-    <ClientOnly>
       <div :class="keyboardClass"></div>
-    </ClientOnly>
 </template>
 
 <script>
 
-import "simple-keyboard/build/css/index.css";
+import Keyboard from "simple-keyboard";
+
 
 export default {
   name: "SimpleKeyboard",
@@ -23,9 +22,10 @@ export default {
     keyboard: null
   }),
   mounted() {
-    if(process.isClient){
-      const Keyboard = require("simple-keyboard");
-    }
+
+  //  const Keyboard = require("simple-keyboard").default;
+//    require("simple-keyboard/build/css/index.css")
+
     this.keyboard = new Keyboard({
       //onChange: input => onChange(input),
       //onKeyPress: button => onKeyPress(button),
@@ -114,5 +114,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+
+  body,html{margin:0;padding:0}.simple-keyboard{font-family:HelveticaNeue-Light,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;width:100%;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;box-sizing:border-box;overflow:hidden;touch-action:manipulation}.simple-keyboard .hg-row{display:flex}.simple-keyboard .hg-row:not(:last-child){margin-bottom:5px}.simple-keyboard .hg-row .hg-button-container,.simple-keyboard .hg-row .hg-button:not(:last-child){margin-right:5px}.simple-keyboard .hg-row>div:last-child{margin-right:0}.simple-keyboard .hg-row .hg-button-container{display:flex}.simple-keyboard .hg-button{display:inline-block;flex-grow:1;cursor:pointer}.simple-keyboard .hg-button span{pointer-events:none}.simple-keyboard.hg-theme-default{background-color:rgba(0,0,0,.1);padding:5px;border-radius:5px}.simple-keyboard.hg-theme-default .hg-button{box-shadow:0 0 3px -1px rgba(0,0,0,.3);height:40px;border-radius:5px;box-sizing:border-box;padding:5px;background:#fff;border-bottom:1px solid #b5b5b5;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:rgba(0,0,0,0)}.simple-keyboard.hg-theme-default .hg-button.hg-activeButton{background:#efefef}.simple-keyboard button.hg-button{border-width:0;outline:0;font-size:inherit}.simple-keyboard.hg-theme-default.hg-layout-numeric .hg-button{width:33.3%;height:60px;align-items:center;display:flex;justify-content:center}.simple-keyboard.hg-theme-default .hg-button.hg-button-numpadadd,.simple-keyboard.hg-theme-default .hg-button.hg-button-numpadenter{height:85px}.simple-keyboard.hg-theme-default .hg-button.hg-button-numpad0{width:105px}.simple-keyboard.hg-theme-default .hg-button.hg-button-com{max-width:85px}.simple-keyboard.hg-theme-default .hg-button.hg-standardBtn.hg-button-at{max-width:45px}.simple-keyboard.hg-theme-default .hg-button.hg-selectedButton{background:rgba(5,25,70,.53);color:#fff}.simple-keyboard.hg-theme-default .hg-button.hg-standardBtn[data-skbtn=".com"]{max-width:82px}.simple-keyboard.hg-theme-default .hg-button.hg-standardBtn[data-skbtn="@"]{max-width:60px}
+ /*# sourceMappingURL=index.css.map */
 </style>

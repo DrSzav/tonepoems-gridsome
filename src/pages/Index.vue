@@ -1,9 +1,9 @@
 <template>
   <Layout>
     <div id="mainBlock" class="container">
-      <ClientOnly>
+
         <v-dialog/>
-      </ClientOnly>
+
       <h1 id="title" class="text-6xl text-center">New Poem</h1>
       <h1 id="title" class="text-1xl text-center">type something below:</h1>
       <div class=".DivWithScroll text-center">
@@ -53,6 +53,8 @@ import { observer } from 'vue-mutation-observer';
 import RecentPoems from '~/components/RecentPoems.vue';
 //import apolloProvider from '~/apollo.js';
 import { required, minLength, between } from 'vuelidate/lib/validators';
+
+//import SimpleKeyboard from ;
 EventLooper.reset();
 EventLooper.start();
 let mySynth = null;
@@ -75,7 +77,7 @@ export default {
   },
   components: {
     RecentPoems,
-    SimpleKeyboard:()=> import('~/components/SimpleKeyboard.vue'),
+    SimpleKeyboard: ()=> import('~/components/SimpleKeyboard.vue')
 },
   data: ()=>
     {
@@ -154,7 +156,7 @@ export default {
 
       this.$modal.show('dialog', {
         title: 'somewhat important',
-        text: 'touch any button to begin...',
+        text: 'this website makes beautiful music (and sometimes noise), to start press any button',
         buttons: [
           {
             title: 'just touch Me ;)',

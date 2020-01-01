@@ -14,29 +14,31 @@ import Vuelidate from 'vuelidate'
 import VueGun from 'vue-gun';
 import SocialSharing from 'vue-social-sharing';
 import logo from '~/assets/img/sitelogo.png';
-
-import responsive from 'vue-responsive';
+import "simple-keyboard/build/css/index.css";
+//import responsive from 'vue-responsive';
 
 
 export default function (Vue, { router, head, isClient, appOptions}) {
   // Set default layout as a global component
   console.log(router);
   Vue.use(Vuelidate);
-  Vue.use(responsive);
+
 
   Vue.use(VueGun, {
     peers: ['https://gun-super-peer.unubo.app/gun']
   });
   Vue.use(SocialSharing);
   //
-/*
+
   if (process.isClient) {
       const VModal = require('vue-js-modal').default;
 
       Vue.use(VModal, { dialog: true });
+      const responsive = require('vue-responsive').default;
+      Vue.use(responsive);
   }
 
-  */
+
   //Vue.use(ApolloProvider);
   //appOptions.ApolloProvider = ApolloProvider;
   Vue.component('Layout', DefaultLayout);
