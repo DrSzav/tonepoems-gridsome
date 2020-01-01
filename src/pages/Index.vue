@@ -156,7 +156,7 @@ export default {
 
       this.$modal.show('dialog', {
         title: 'somewhat important',
-        text: 'this website makes beautiful music (and sometimes noise), to start press any button',
+        text: 'this website makes beautiful majestic music (and sometimes awful, terrible, noise), to start press any button',
         buttons: [
           {
             title: 'just touch Me ;)',
@@ -225,7 +225,7 @@ export default {
             pasteHtmlAtCaret(' ');
             return
           }
-          if(button == '{shift}'){
+          if(button == '{shift}' || button == '{numbers}' || button == '{abc}'){
             return
           }
           if(button == '{backspace}'){
