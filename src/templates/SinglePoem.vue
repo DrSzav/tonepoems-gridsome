@@ -65,6 +65,7 @@ export default {
     },
     getPoem(id){
       EventLooper.stop();
+      this.playing = false;
       this.$gun.get('allpoems').get(id).on((poem)=>{
         this.poem = poem;
 
