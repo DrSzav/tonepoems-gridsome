@@ -29,12 +29,14 @@ export default function (Vue, { router, head, isClient, appOptions}) {
   });
   Vue.use(SocialSharing);
   //
-
+/*
   if (process.isClient) {
       const VModal = require('vue-js-modal').default;
 
       Vue.use(VModal, { dialog: true });
   }
+
+  */
   //Vue.use(ApolloProvider);
   //appOptions.ApolloProvider = ApolloProvider;
   Vue.component('Layout', DefaultLayout);

@@ -1,7 +1,8 @@
+//import VModal from 'vue-js-modal/dist/ssr.index'
 
-//import VModal from 'vue-js-modal';
-
-
-export default function (Vue, options, context) {
-//   Vue.use(VModal, { dialog: true })
+export default function (Vue, options, { isServer: disabled, router }) {
+  if(process.isClient) {
+    const { default: VModal } = require('vue-js-modal')
+    Vue.use(VModal)
+  }
 }

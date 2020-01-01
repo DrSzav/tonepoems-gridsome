@@ -1,9 +1,11 @@
 <template>
-  <div :class="keyboardClass"></div>
+    <ClientOnly>
+      <div :class="keyboardClass"></div>
+    </ClientOnly>
 </template>
 
 <script>
-import Keyboard from "simple-keyboard";
+
 import "simple-keyboard/build/css/index.css";
 
 export default {
@@ -21,6 +23,9 @@ export default {
     keyboard: null
   }),
   mounted() {
+    if(process.isClient){
+      const Keyboard = require("simple-keyboard");
+    }
     this.keyboard = new Keyboard({
       //onChange: input => onChange(input),
       //onKeyPress: button => onKeyPress(button),

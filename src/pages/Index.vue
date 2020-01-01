@@ -45,15 +45,6 @@ import POEMS_ALL 		from '../graphql/PoemsAll.gql';
 import { ulid } from 'ulid'
 
 //SimpleKey = new SimpleKeyboard();
-const todoItemsQuery = gql`
-  {
-    clientSide @client {
-      id
-      innerText
-      innerHTML
-    }
-  }
-`;
 //<span v-for="letter in letters" v-bind:class="{ active: stepNumber === syncKey }" contenteditable="false">{{letter}}</span>
 import WebSynth from '../webAudioSynth.js';
 import EventLooper from '../EventLooper.js';
@@ -67,7 +58,6 @@ EventLooper.start();
 let mySynth = null;
 //import SimpleKeyboard from '~/components/SimpleKeyboard.vue'
 
-import Vue from 'vue';
 //import VModal from 'vue-js-modal';
 
 function ignoreThis(key){
