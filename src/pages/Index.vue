@@ -1,10 +1,9 @@
 <template>
   <Layout>
     <div id="mainBlock" class="container">
-      <modal name="touch-me">
-  just touch this button...
-
-  </modal>
+      <ClientOnly>
+        <v-dialog/>
+      </ClientOnly>
       <h1 id="title" class="text-6xl text-center">New Poem</h1>
       <h1 id="title" class="text-1xl text-center">type something below:</h1>
       <div class=".DivWithScroll text-center">
@@ -19,8 +18,9 @@
 
           ">
         </div>
-
-        <SimpleKeyboard v-responsive.md.sm.xs @onKeyPress="onKeyPress"/>
+        <ClientOnly>
+          <SimpleKeyboard v-responsive.md.sm.xs @onKeyPress="onKeyPress"/>
+        </ClientOnly>
         <div class="simple-keyboard"></div>
         <div class="m-12">
         <button  v-on:click="savePoem" class="bg-white hover:bg-gray-100 text-gray font-semibold py-2 px-4 border border-gray-400 rounded shadow">
@@ -57,7 +57,7 @@ const todoItemsQuery = gql`
 //<span v-for="letter in letters" v-bind:class="{ active: stepNumber === syncKey }" contenteditable="false">{{letter}}</span>
 import WebSynth from '../webAudioSynth.js';
 import EventLooper from '../EventLooper.js';
-import {pasteHtmlAtCaret, isTouchDevice} from '../helperFunctions.js';
+import {pasteHtmlAtCaret} from '../helperFunctions.js';
 import { observer } from 'vue-mutation-observer';
 import RecentPoems from '~/components/RecentPoems.vue';
 //import apolloProvider from '~/apollo.js';
@@ -65,10 +65,10 @@ import { required, minLength, between } from 'vuelidate/lib/validators';
 EventLooper.reset();
 EventLooper.start();
 let mySynth = null;
-import SimpleKeyboard from '~/components/SimpleKeyboard.vue'
+//import SimpleKeyboard from '~/components/SimpleKeyboard.vue'
 
-let mobile = window.innerWidth > 990 ? true : false;
-
+import Vue from 'vue';
+//import VModal from 'vue-js-modal';
 
 function ignoreThis(key){
   return [' '].indexOf (key) > -1 ? true : false;
@@ -85,9 +85,8 @@ export default {
   },
   components: {
     RecentPoems,
-    SimpleKeyboard
-
-  },
+    SimpleKeyboard:()=> import('~/components/SimpleKeyboard.vue'),
+},
   data: ()=>
     {
       return {
@@ -95,7 +94,9 @@ export default {
           letters: [],
           innerHTML:'',
           innerText:'',
-          width:document.width
+        //  width:document.width,
+          mobile:true
+
 
       }
     },
@@ -112,14 +113,10 @@ export default {
 
   directives: { observer },
   computed: {
-    mobile: ()=>{
-      return window.innerWidth < 990;
-      }
-    ,
     onfocus: function () {
 
       // `this` points to the vm instance
-      if(mobile){
+      if(this.mobile){
         return ()=>{
             console.log('do something')
             this.$refs.input.blur();
@@ -132,7 +129,7 @@ export default {
       }
     },
     contenteditable: function(){
-      if(mobile){
+      if(this.mobile){
       return
         'false'
       }
@@ -153,8 +150,11 @@ export default {
 }
 
   },
-  mounted()
-  {
+  mounted(){
+
+
+      this.mobile =  window.innerWidth < 990;
+
       if(!this.mySynth){
         this.mySynth = new WebSynth('Original','C',window);
       }
@@ -182,14 +182,6 @@ export default {
      })
   },
   methods: {
-    onFocusFunction(){
-      if(isTouchDevice()){
-          blur();
-      }
-      else{
-
-      }
-    },
     updatePoem (e) {
       this.$store.commit('updatePoem', e.target.value)
     },

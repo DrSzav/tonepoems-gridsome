@@ -1,7 +1,7 @@
 <template>
 
   <div class="layout">
-    <v-dialog/>
+
     <header class="header">
 
       <strong>
@@ -24,6 +24,14 @@ query {
 }
 </static-query>
 
+<script>
+
+export default {
+  metaInfo: {
+    title: 'Tone Poems Home'
+  }
+}
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css?family=Lilita+One|Montserrat|Solway&display=swap');
 body {
