@@ -4,6 +4,7 @@
 
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
+const fs = require('fs')
 
 module.exports = function (api) {
   api.createPages(({ createPage }) => {
@@ -11,15 +12,6 @@ module.exports = function (api) {
       path: '/:id',
       component: './src/templates/SinglePoem.vue'
     })
-  })
-  api.loadSource((actions => {
-    // Use the Data Store API here: https://gridsome.org/docs/data-store-api/
-    const collection = actions.addCollection('poems')
-
-    collection.addNode({
-      innerText: 'Lorem ipsum dolor sit amet.',
-      innerHTML:''
-    });
-
-  }));
+  }
+)
 }

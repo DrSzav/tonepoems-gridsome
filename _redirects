@@ -1,0 +1,10 @@
+# This will redirect /jobs/customer-ninja-rockstar
+/about         /about
+
+/         / 200
+
+# This will redirect all paths under /jobs except the path above
+/*                        /Poem   200
+
+# This will never trigger, because the rule above will trigger first
+/jobs/outdated-job-link        /careers/position-filled
