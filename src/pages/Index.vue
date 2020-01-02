@@ -9,7 +9,8 @@
       <div class=".DivWithScroll text-center">
 
         <div id="wow" ref="input" width="100%" v-observer:subtree.childList="mutationHandler"
-          @blur="onEdit" @focus="mobile ? $event.target.blur() : null"
+          @blur="onEdit"
+          @focus="mobile ? $event.target.blur() : null"
           contenteditable="contenteditable" @paste.prevent data-ph="Type Something..." v-on:keyup="keyupEvent"
           v-on:keydown="keydownEvent" class="
           h-auto min-h-32 poemHolder align-middle text-3xl text-center
@@ -184,7 +185,7 @@ export default {
         console.log(event.key);
     }},
     keydownEvent(event) {
-      this.$refs.input.focus();
+      //this.$refs.input.focus();
 
       if(!EventLooper.nowPlaying){
         EventLooper.start();

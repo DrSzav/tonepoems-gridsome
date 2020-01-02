@@ -2,9 +2,6 @@
 
   <Layout>
     <div>
-    <div v-if="!poem">
-      <h1>Oooops! poem not found...</h1>
-    </div>
   <div class="text-center my-16 pb-32">
     <div v-if="poem" class="">
       <h1 class="text-4xl">What a Beautiful Poem</h1>

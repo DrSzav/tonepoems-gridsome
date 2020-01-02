@@ -95,6 +95,7 @@ class WebAudioSynth {
     this.scale = this._Scales[noteScale];
     this.window.addEventListener('touchend',this.registerAudio.bind(this));
     this.window.addEventListener('mouseup',this.registerAudio.bind(this));
+    this.window.addEventListener('load',this.registerAudio.bind(this));
     document.addEventListener('visibilitychange', () => {
       if(this.audioCtx && this.audioCtx.state !== 'closed') {
         this.pause(); // change tab text for demo
@@ -104,8 +105,14 @@ class WebAudioSynth {
 
   registerAudio() {
     if(!this.AudioCtx){
-      AudioContext = this.window.AudioContext || this.window.webkitAudioContext;
+      let AudioContext = this.window.AudioContext;
+      if(!AudioContext ){
+        AudioContext = this.window.webkitAudioContext;
+      }
+
+
       var audioCtx = new AudioContext();
+
       this.AudioCtx = audioCtx;
 
       var buffer = this.AudioCtx.createBuffer(1, 1, 96000,22050);
