@@ -20,7 +20,7 @@
     <h1 v-if="!shareOn" v-on:click="shareOn = !shareOn" class="py-2 text-2xl cursor-pointer">Share this masterpiece</h1>
     <transition name="fade">
     <div v-if="shareOn" class=" container">
-      <vue-goodshare button_design="outline"></vue-goodshare>
+    
     </div>
   </transition>
     </div>
@@ -42,14 +42,14 @@ let mySynth = null;
 export default {
   data() {
     return {
-      poem: {innerHTML:''},
+      poem: {innerHTML:'','_':{'#':0}},
       shareOn: false,
       playing: false
     }
   },
   components: {
     RecentPoems,
-    VueGoodshare
+    VueGoodshare: ()=> import('vue-goodshare')
   },
   methods:{
     playPoem(){

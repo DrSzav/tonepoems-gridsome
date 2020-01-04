@@ -45,7 +45,7 @@ let mySynth = null;
 export default {
   data() {
     return {
-      poem: {innerHTML:''},
+      poem: {innerHTML:'','_':{'#':0}},
       shareOn: false,
       playing: false
     }
