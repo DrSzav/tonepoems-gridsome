@@ -12,9 +12,11 @@ import Vuelidate from 'vuelidate'
 //import VModal from 'vue-js-modal'
 
 import VueGun from 'vue-gun';
-import SocialSharing from 'vue-social-sharing';
+//import SocialSharing from 'vue-social-sharing';
 import logo from '~/assets/img/sitelogo.png';
 import "simple-keyboard/build/css/index.css";
+
+
 //import responsive from 'vue-responsive';
 
 
@@ -27,7 +29,7 @@ export default function (Vue, { router, head, isClient, appOptions}) {
   Vue.use(VueGun, {
     peers: ['https://gun-super-peer.unubo.app/gun']
   });
-  Vue.use(SocialSharing);
+  //Vue.use(SocialSharing);
   //
 
   if (process.isClient) {

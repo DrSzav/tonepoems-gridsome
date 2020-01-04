@@ -23,7 +23,9 @@
     <h1 v-if="!shareOn" v-on:click="shareOn = !shareOn" class="py-2 text-2xl cursor-pointer">Share this masterpiece</h1>
     <transition name="fade">
     <div v-if="shareOn" class=" container">
+      <ClientOnly>
       <vue-goodshare button_design="outline"></vue-goodshare>
+    </ClientOnly>
     </div>
   </transition>
     </div>
@@ -37,10 +39,11 @@
 </Layout>
 </template>
 <script>
-import VueGoodshare from "vue-goodshare";
+//import VueGoodshare from "vue-goodshare";
 import RecentPoems from '~/components/RecentPoems.vue';
 import EventLooper from '../EventLooper.js';
 import WebSynth from '../webAudioSynth.js';
+
 let mySynth = null;
 export default {
   data() {
@@ -52,7 +55,7 @@ export default {
   },
   components: {
     RecentPoems,
-    VueGoodshare
+    VueGoodshare: ()=> import('vue-goodshare')
   },
   methods:{
     playPoem(){
