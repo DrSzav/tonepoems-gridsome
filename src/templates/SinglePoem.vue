@@ -58,7 +58,7 @@ export default {
   },
   methods:{
     copyLink(){
-      this.this_url = window.location.origin + '/' + this.id;
+      this.this_url = this.window.location.origin + '/' + this.id;
     console.log('hello')
         setTimeout( () => {
           console.log('hi')
@@ -110,6 +110,7 @@ export default {
   async mounted() {
     //console.log(this.$route)
     this.this_url = '';
+    this.window = window;
     this.getPoem(this.$route.params.id);
     mySynth = new WebSynth('Original','C',window);
   },
