@@ -15,7 +15,7 @@ import VueGun from 'vue-gun';
 //import SocialSharing from 'vue-social-sharing';
 import logo from '~/assets/img/sitelogo.png';
 import "simple-keyboard/build/css/index.css";
-import Toasted from 'vue-toasted';
+//import Toasted from 'vue-toasted';
 
 //import responsive from 'vue-responsive';
 
@@ -24,7 +24,7 @@ export default function (Vue, { router, head, isClient, appOptions}) {
   // Set default layout as a global component
   console.log(router);
   Vue.use(Vuelidate);
-  Vue.use(Toasted);
+
 
   Vue.use(VueGun, {
     peers: ['https://gun-super-peer.unubo.app/gun']
@@ -38,6 +38,8 @@ export default function (Vue, { router, head, isClient, appOptions}) {
       Vue.use(VModal, { dialog: true });
       const responsive = require('vue-responsive').default;
       Vue.use(responsive);
+      const toasted = require('vue-toasted').default;
+      Vue.use(toasted);
   }
 
 

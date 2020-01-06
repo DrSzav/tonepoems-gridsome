@@ -49,7 +49,8 @@ export default {
       poem: {innerHTML:'','_':{'#':0}},
       shareOn: false,
       playing: false,
-      this_url: ''
+      this_url: '',
+      window:null
     }
   },
   components: {
@@ -58,7 +59,9 @@ export default {
   },
   methods:{
     copyLink(){
+
       this.this_url = this.window.location.origin + '/' + this.id;
+
     console.log('hello')
         setTimeout( () => {
           console.log('hi')
@@ -68,8 +71,11 @@ export default {
         copyText.setSelectionRange(0, 99999); /*For mobile devices*/
     /* Copy the text inside the text field */
       document.execCommand("copy");
-        this.$toasted.show('URL copied to clipboard!',{duration:1000});
+        if (process.isClient) {
+          this.$toasted.show('URL copied to clipboard!',{duration:1000});
+        }
       },200);
+
     },
     playPoem(){
       this.playing = true;
@@ -110,7 +116,9 @@ export default {
   async mounted() {
     //console.log(this.$route)
     this.this_url = '';
-    this.window = window;
+    if(process.isClient){
+      this.window = window;
+    }
     this.getPoem(this.$route.params.id);
     mySynth = new WebSynth('Original','C',window);
   },
