@@ -17,7 +17,8 @@
         Stop
       </button>
       <div class="">
-    <h1 v-if="!shareOn" v-on:click="shareOn = !shareOn" class="py-2 text-2xl cursor-pointer">Share this masterpiece</h1>
+    <h1 v-on:click="shareOn = !shareOn" class="py-2 text-2xl cursor-pointer">Share this masterpiece</h1>
+    <p>Do we ever see this?</p>
     <transition name="fade">
     <div v-if="shareOn" class=" container">
 
@@ -45,7 +46,8 @@ export default {
     return {
       poem: {innerHTML:'','_':{'#':0}},
       shareOn: false,
-      playing: false
+      playing: false,
+      url: ''
     }
   },
   components: {
@@ -90,6 +92,7 @@ export default {
     }
   },
   async mounted() {
+
     this.getPoem(this.$route.params.id);
     mySynth = new WebSynth('Original','C',window);
   },

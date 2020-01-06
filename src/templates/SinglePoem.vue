@@ -20,12 +20,10 @@
         Stop
       </button>
       <div class="">
-    <h1 v-if="!shareOn" v-on:click="shareOn = !shareOn" class="py-2 text-2xl cursor-pointer">Share this masterpiece</h1>
+    <h1 v-on:click="copyLink" class="py-2 text-2xl cursor-pointer">Share this masterpiece</h1>
+    <input type="text" v-model="this_url" id="inputty" ref="copy"></input>
     <transition name="fade">
     <div v-if="shareOn" class=" container">
-      <ClientOnly>
-      <vue-goodshare button_design="outline"></vue-goodshare>
-    </ClientOnly>
     </div>
   </transition>
     </div>
@@ -50,7 +48,8 @@ export default {
     return {
       poem: {innerHTML:'','_':{'#':0}},
       shareOn: false,
-      playing: false
+      playing: false,
+      this_url: ''
     }
   },
   components: {
@@ -58,6 +57,20 @@ export default {
     VueGoodshare: ()=> import('vue-goodshare')
   },
   methods:{
+    copyLink(){
+      this.this_url = window.location.origin + '/' + this.id;
+    console.log('hello')
+        setTimeout( () => {
+          console.log('hi')
+        var copyText = this.$refs.copy;
+        copyText.select();
+
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+    /* Copy the text inside the text field */
+      document.execCommand("copy");
+        this.$toasted.show('URL copied to clipboard!',{duration:1000});
+      },200);
+    },
     playPoem(){
       this.playing = true;
       EventLooper.start();
@@ -71,7 +84,7 @@ export default {
       this.playing = false;
       this.$gun.get('allpoems').get(id).on((poem)=>{
         this.poem = poem;
-
+        this.id = id;
         EventLooper.reset();
 
         var wrapper= document.createElement('div');
@@ -95,6 +108,8 @@ export default {
     }
   },
   async mounted() {
+    //console.log(this.$route)
+    this.this_url = '';
     this.getPoem(this.$route.params.id);
     mySynth = new WebSynth('Original','C',window);
   },
@@ -103,7 +118,7 @@ export default {
     EventLooper.reset();
     EventLooper.stop();
      this.getPoem(to.params.id);
-
+     this.this_url = window.location.href;
      next();
  }
 }

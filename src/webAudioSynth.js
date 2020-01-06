@@ -29,7 +29,7 @@ class PolyNoteClass {
     setTimeout(
       ()=>{
         this.decayEnvelope()
-      },1000 / tempo);
+      },2000 / tempo);
   }
 
   attackEnvelope(){
