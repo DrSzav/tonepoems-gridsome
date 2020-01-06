@@ -54,8 +54,7 @@ export default {
     }
   },
   components: {
-    RecentPoems,
-    VueGoodshare: ()=> import('vue-goodshare')
+    RecentPoems
   },
   methods:{
     copyLink(){
