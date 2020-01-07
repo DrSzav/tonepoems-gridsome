@@ -1,9 +1,12 @@
-# This will redirect /jobs/customer-ninja-rockstar
+# 
 /about         /about
-
 /about/        /about
-
+/home  /index
+/home/ /index
 /         /
+
+
+
 
 # This will redirect all paths under /jobs except the path above
 /*                        /Poem   200
