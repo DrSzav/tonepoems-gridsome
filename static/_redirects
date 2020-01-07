@@ -1,6 +1,8 @@
 # This will redirect /jobs/customer-ninja-rockstar
 /about         /about
-
+/about/ /about
+/home /
+/home/ /
 /         / 200
 
 # This will redirect all paths under /jobs except the path above
