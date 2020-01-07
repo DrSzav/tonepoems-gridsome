@@ -6,10 +6,10 @@
 
 
 <script>
-import SinglePoem from '~/templates/SinglePoem'
+//import SinglePoem from '~/templates/SinglePoem'
 export default {
   components: {
-    SinglePoem
+    SinglePoem:import('~/templates/SinglePoem').default
   }
 }
 </script>
