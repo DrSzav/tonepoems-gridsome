@@ -7,11 +7,12 @@
 const fs = require('fs')
 
 module.exports = function (api) {
-  api.createPages(({ createPage }) => {
+  /*api.createPages(({ createPage }) => {
     createPage({
       path: '/:id',
       component: './src/templates/SinglePoem.vue'
     })
   }
-)
+)*/
+
 }
