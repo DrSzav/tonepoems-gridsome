@@ -6,7 +6,7 @@
       <h1>Oooops! poem not found...</h1>
     </div>
   <div class="text-center my-16 pb-32">
-    <div v-if="poem" class="">
+    <div v-show="poem" class="">
       <h1 class="text-4xl">What a Beautiful Poem</h1>
       <div id="wow" width="100%"
         class="h-auto min-h-32 poemHolder align-middle text-3xl text-center
