@@ -5,6 +5,9 @@
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
 module.exports = {
+  chainWebpack (config) {
+    config.mode('development')
+  },
 
   siteName: 'Tone Poems',
   plugins: [
