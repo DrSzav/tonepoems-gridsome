@@ -1,8 +1,8 @@
 <template>
   <Layout>
-    <ClientOnly>
+  
     <SinglePoem />
-  </ClientOnly>
+
   </Layout>
 </template>
 
