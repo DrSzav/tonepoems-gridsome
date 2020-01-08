@@ -1,7 +1,6 @@
 # This will redirect /jobs/customer-ninja-rockstar
 /about         /about
-/about /about
-
+/about/ /about 200
 /home  /  200
 /home/ /  200
 /         / 200
