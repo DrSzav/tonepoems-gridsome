@@ -10,7 +10,7 @@
 
         <div id="wow" ref="input" width="100%" v-observer:subtree.childList="mutationHandler"
           @blur="onEdit"
-          @focus="mobile ? $event.target.blur() : null"
+    
           contenteditable="contenteditable" @paste.prevent data-ph="Type Something..." v-on:keyup="keyupEvent"
           v-on:keydown="keydownEvent" class="
           h-auto min-h-32 poemHolder align-middle text-3xl text-center
@@ -40,9 +40,7 @@
 
 <script>
 //import Keyboard from "simple-keyboard";
-import gql from 'graphql-tag';
-import POEMS_CREATE from '~/graphql/CreatePoem.gql';
-import POEMS_ALL 		from '../graphql/PoemsAll.gql';
+import { db } from '~/firebaseConfig'
 import { ulid } from 'ulid'
 
 //SimpleKey = new SimpleKeyboard();
@@ -123,8 +121,10 @@ export default {
     },
     contenteditable: function(){
       if(this.mobile){
+        console.log('this is mobile')
       return
-        'false'
+       // 'false'
+       'contenteditable'
       }
       else{
         return 'contenteditable'
@@ -166,7 +166,7 @@ export default {
           {
             title: 'do not touch',       // Button title
             default: true,    // Will be triggered by default if 'Enter' pressed.
-        //    handler: () => { alert('Wow, you touched the wrong button')   } // Button click handler
+   
           },
           {
             title: 'close'
@@ -175,9 +175,6 @@ export default {
      })
   },
   methods: {
-    updatePoem (e) {
-      this.$store.commit('updatePoem', e.target.value)
-    },
     keyupEvent(event){
       if(event.key.length == 1){
         console.log('Key pressed:', event);
@@ -186,7 +183,7 @@ export default {
     }},
     keydownEvent(event) {
       //this.$refs.input.focus();
-
+      console.log('keydownEvent')
       if(!EventLooper.nowPlaying){
         EventLooper.start();
       }
@@ -195,9 +192,13 @@ export default {
       if(event.key.length == 1 && !ignoreThis(event.key)){
         event.preventDefault();
         event.stopPropagation();
-        this.mySynth.playNote(event.keyCode);
+        //convert keycode to charcode:
+        let charCode = event.key.charCodeAt(0);
+
+        this.mySynth.playNote(charCode);
         let eventID = EventLooper.insertEvent(()=> {
-          this.mySynth.playNote.bind(this.mySynth,event.keyCode)();
+          console.log('inserting char code',charCode)
+          this.mySynth.playNote.bind(this.mySynth,charCode)();
         });
         pasteHtmlAtCaret('<span class="letra active' + eventID.stepNumber + '" contenteditable="false" class="' + eventID.functionNumber + eventID.stepNumber + '" data-functionnumber="' + eventID.functionNumber + '" data-stepnumber="' + eventID.stepNumber + '">' + event.key + '</span>');
         console.log('Key pressed:', event);
@@ -213,11 +214,9 @@ export default {
         }
     },
     onKeyPress(button){
-
-    //let node = document.activeElement;
-  //  if(node.id != 'wow'){
+      console.log('onKeyPress')
       this.$refs.input.focus();
-  //  }
+
 
           if(!EventLooper.nowPlaying){
             EventLooper.start();
@@ -248,6 +247,7 @@ export default {
           let charCode =  button.charCodeAt(0);
           this.mySynth.playNote(charCode);
           let eventID = EventLooper.insertEvent(()=> {
+            console.log('inserting char code',charCode)
             this.mySynth.playNote.bind(this.mySynth,charCode)();
           });
           pasteHtmlAtCaret('<span readonly="readonly" tabindex="0" class="letra active' + eventID.stepNumber + '" contenteditable="false" class="' + eventID.functionNumber + eventID.stepNumber + '" data-functionnumber="' + eventID.functionNumber + '" data-stepnumber="' + eventID.stepNumber + '">' + button + '</span>');
@@ -271,13 +271,19 @@ export default {
       });
     },
     savePoem() {
-
       const text = this.innerText;
       const html = this.innerHTML;
-      const newID =  ulid();
-      this.$gun.get('allpoems').get(newID).put({innerText:text, innerHTML: html });
-      this.$router.push({path:'/' + newID });
-      //console.log(this.$gun.get('allpoems').map())
+      const newID = ulid();
+      EventLooper.stop();
+      EventLooper.reset();
+      db.collection('poems').doc(newID).set({
+        innerText: text,
+        innerHTML: html
+      }).then(() => {
+        this.$router.push({ path: '/' + newID });
+      }).catch(error => {
+        console.error("Error saving poem: ", error);
+      });
     },
   },
   beforeRouteUpdate (to, from, next) {

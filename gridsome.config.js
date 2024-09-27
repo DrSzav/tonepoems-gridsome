@@ -3,6 +3,8 @@
 
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
+const dotenv = require('dotenv');
+dotenv.config(); 
 
 module.exports = {
   chainWebpack (config) {
@@ -42,5 +44,4 @@ module.exports = {
       ]
     }
   }
-
 }

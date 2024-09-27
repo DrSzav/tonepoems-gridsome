@@ -11,7 +11,7 @@
       <div id="wow" width="100%"
         class="h-auto min-h-32 poemHolder align-middle text-3xl text-center
         text-gray-700 w-full py-2 px-4 border-transparent
-        rounded bg-white" v-html="poem.innerHTML" :key="poem['_']['#']">
+        rounded bg-white" v-html="poem.innerHTML" :key="poem['id']">
       </div>
       <button :disabled='playing' v-bind:class="{ 'opacity-50': playing, 'cursor-not-allowed': playing }" v-on:click="playPoem" class="mx-2 mb-8 bg-white hover:bg-gray-100 text-gray font-semibold py-2 px-4 border border-gray-400 rounded shadow">
         Play me!
@@ -41,12 +41,13 @@
 import RecentPoems from '~/components/RecentPoems.vue';
 import EventLooper from '../EventLooper.js';
 import WebSynth from '../webAudioSynth.js';
+import { db } from '../firebaseConfig.js';
 
 let mySynth = null;
 export default {
   data() {
     return {
-      poem: {innerHTML:'','_':{'#':0}},
+      poem: {innerHTML:'','id':''},
       shareOn: false,
       playing: false,
       this_url: '',
@@ -84,33 +85,36 @@ export default {
       this.playing = false;
       EventLooper.stop();
     },
-    getPoem(id){
-      EventLooper.stop();
-      this.playing = false;
-      this.$gun.get('allpoems').get(id).on((poem)=>{
-        this.poem = poem;
-        this.id = id;
-        EventLooper.reset();
+    getPoem(id) {
+      console.log('getting poem id:',id)
+      db.collection('poems').doc(id).get().then(doc => {
+        console.log(doc.data())
+        if (doc.exists) {
+          this.poem = doc.data();
+          this.id = doc.id;
+          EventLooper.reset();
 
-        var wrapper= document.createElement('div');
-        wrapper.innerHTML= poem.innerHTML;
-        //var div= wrapper.firstChild;
-        for(var child=wrapper.firstChild; child!==null; child=child.nextSibling) {
-          //console.log(child);
-          if(child.innerText){
-            let keycode = child.innerText.charCodeAt(0);
-            let stepNumber = child.dataset['stepnumber'];
-            EventLooper.insertEventAt(()=>{
-              mySynth.playNote.bind(mySynth,keycode)();
-            },stepNumber);
+          var wrapper = document.createElement('div');
+          wrapper.innerHTML = this.poem.innerHTML;
+          for (var child = wrapper.firstChild; child !== null; child = child.nextSibling) {
+            if (child.innerText) {
+              console.log('child inner text',child.innerText)
+              let keycode = child.innerText.charCodeAt(0);
+              let stepNumber = child.dataset['stepnumber'];
+              EventLooper.insertEventAt(() => {
+                console.log('inserting char code',keycode)
+                mySynth.playNote.bind(mySynth, keycode)();
+              }, stepNumber);
+            }
           }
+          console.log(this.poem);
+        } else {
+          console.log("No such document!");
         }
-        console.log(poem)
-
-      }
-      );//.put({innerText:text, innerHTML: html })
-      console.log(this.poem)
-    }
+      }).catch(error => {
+        console.error("Error getting poem: ", error);
+      });
+    },
   },
   async mounted() {
     //console.log(this.$route)

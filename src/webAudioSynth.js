@@ -10,7 +10,10 @@ class PolyNoteClass {
     //Constructor
      //freq = noteToFrequency(midinote);
     let freq2 = freq * 2;
-
+    if (!myAudioContext){
+      console.log('no audio context')
+      return
+    }
     this.gainNode = myAudioContext.createGain();
     this.gainNode.gain.value = 0;
 

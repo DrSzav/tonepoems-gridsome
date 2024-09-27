@@ -28,7 +28,9 @@ class EventLooper {
       let clone = [... events]
       while(clone && clone.length > 0){
         let func = clone.pop();
-        func();
+        if(func){
+          func();
+        }
         /*
         var elems = document.querySelectorAll(".letra");
 
@@ -82,10 +84,10 @@ class EventLooper {
 
   deleteEvent(stepNumber,functionNumber){
     try{
-     this.loopArray[stepNumber].splice(functionNumber,1);
+     this.loopArray[stepNumber][functionNumber] = false;
    }
    catch(e){
-
+    console.log('error deleting event',e);
    }
   }
 

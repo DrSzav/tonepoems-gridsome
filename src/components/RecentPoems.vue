@@ -7,7 +7,7 @@
     <div  class="flex flex-wrap">
 
 
-      <div v-for="poem in poemArray" :key="poem.id" class="p-2 w-4/12 w-32 h-32 text-center ">
+      <div v-for="poem in poems" :key="poem.id" class="p-2 w-4/12 w-32 h-32 text-center ">
         <a :href="poem.id" class="box-shadow hover:bg-gray-100 h-full justify-center flex-col flex rounded flex justify-center">
           <div class="h-auto  overflow-hidden"><h2>{{ poem.innerText }}</h2></div>
         </a>
@@ -20,51 +20,25 @@
 
 
 <script>
-import Vue from 'vue'
+import { db } from '~/firebaseConfig'
+
 export default {
   name: 'RecentPoems',
-  data () {
+  data() {
     return {
-      allpoems: {},
+      poems: []
     }
   },
-  mounted: function(){
-  //  this.allpoems = this.$gun.get('allpoems');
-//  let vueInstance = this.vm;
-  console.log(this)
-    this.$gun.get('allpoems').map().on((node, key) => {
-         // add results straight to the Vue component state
-         // and get updates when nodes are updated by GUN
-         console.log(node)
-         //node.id = key;
-        // this.allpoems[key] = node;
-         Vue.set( this.allpoems, key, node )
-     });
-
-  },
-  computed:{
-    poemArray:function(){
-      //this.allpoems = this.$gun.get('allpoems');
-      let mypoems = [];
-      for(var key in this.allpoems) {
-        if(this.allpoems[key] && this.allpoems[key].innerHTML ){
-          mypoems.push({id:key,innerHTML:this.allpoems[key].innerHTML,innerText:this.allpoems[key].innerText});
-        }
-      }
-      /*
-      this.$gun.get('allpoems').map().on((node, key) => {
-           // add results straight to the Vue component state
-           // and get updates when nodes are updated by GUN
-           console.log(node)
-           node.id = key;
-           mypoems.push(node);
-       });
-       */
-       return mypoems.reverse();
-    },
-    superpoems:function(){
-      return this.$gun.get('allpoems')
-    }
+  mounted() {
+    db.collection('poems').get().then(snapshot => {
+      console.log(snapshot.docs)  
+      let poems = snapshot.docs.map(doc => {
+        console.log(doc.data())
+        
+        return { ...doc.data(), id: doc.id }
+      })
+      this.poems = poems.reverse()
+    })
   }
 }
 </script>

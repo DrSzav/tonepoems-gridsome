@@ -3,34 +3,17 @@
 
 import DefaultLayout from '~/layouts/Default.vue'
 import '~/styles/style.css'
-
 import Vue from 'vue'
-//import VueApollo from 'vue-apollo'
-//import ApolloProvider from '~/apollo.js'
 import Vuelidate from 'vuelidate'
 
-//import VModal from 'vue-js-modal'
-
-import VueGun from 'vue-gun';
-//import SocialSharing from 'vue-social-sharing';
 import logo from '~/assets/img/sitelogo.png';
 import "simple-keyboard/build/css/index.css";
-//import Toasted from 'vue-toasted';
-
-//import responsive from 'vue-responsive';
-
-
 export default function (Vue, { router, head, isClient, appOptions}) {
   // Set default layout as a global component
   console.log(router);
   Vue.use(Vuelidate);
 
 
-  Vue.use(VueGun, {
-    peers: ['https://gun-super-peer.unubo.app/gun']
-  });
-  //Vue.use(SocialSharing);
-  //
 
   if (process.isClient) {
       const VModal = require('vue-js-modal').default;
@@ -42,12 +25,7 @@ export default function (Vue, { router, head, isClient, appOptions}) {
       Vue.use(toasted);
   }
 
-
-  //Vue.use(ApolloProvider);
-  //appOptions.ApolloProvider = ApolloProvider;
   Vue.component('Layout', DefaultLayout);
-//  Vue.use(VModal, { dialog: true });
-  //Vue.component('Keyboard', new SimpleKeyboard());
   head.meta.push({name:'og:description',content:'Create and share short poems and messages.'});
   head.meta.push({name:'og:title',content:'Tone Poems'});
   console.log(logo)
