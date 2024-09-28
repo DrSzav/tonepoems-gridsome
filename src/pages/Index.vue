@@ -50,8 +50,7 @@ import EventLooper from '../EventLooper.js';
 import {pasteHtmlAtCaret} from '../helperFunctions.js';
 import { observer } from 'vue-mutation-observer';
 import RecentPoems from '~/components/RecentPoems.vue';
-//import apolloProvider from '~/apollo.js';
-import { required, minLength, between } from 'vuelidate/lib/validators';
+import { required, minLength } from 'vuelidate/lib/validators';
 
 //import SimpleKeyboard from ;
 EventLooper.reset();
