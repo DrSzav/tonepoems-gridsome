@@ -3,8 +3,9 @@
 
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
-const dotenv = require('dotenv');
-dotenv.config(); 
+// const dotenv = require('dotenv');
+// dotenv.config(); 
+const DotenvWebpack = require('dotenv-webpack');
 
 module.exports = {
   chainWebpack (config) {
@@ -14,8 +15,12 @@ module.exports = {
   siteName: 'Tone Poems',
   plugins: [
     {
-      use: 'gridsome-plugin-tailwindcss'
+      use: 'gridsome-plugin-tailwindcss',
     },
+    new DotenvWebpack({
+      systemvars: true
+  }),
+
   /* {
      use: `gridsome-plugin-netlify-cms`,
      options: {
