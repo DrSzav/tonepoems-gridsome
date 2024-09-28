@@ -39,12 +39,9 @@
 
 
 <script>
-//import Keyboard from "simple-keyboard";
+
 import { db } from '~/firebaseConfig'
 import { ulid } from 'ulid'
-
-//SimpleKey = new SimpleKeyboard();
-//<span v-for="letter in letters" v-bind:class="{ active: stepNumber === syncKey }" contenteditable="false">{{letter}}</span>
 import WebSynth from '../webAudioSynth.js';
 import EventLooper from '../EventLooper.js';
 import {pasteHtmlAtCaret} from '../helperFunctions.js';
@@ -52,13 +49,8 @@ import { observer } from 'vue-mutation-observer';
 import RecentPoems from '~/components/RecentPoems.vue';
 import { required, minLength } from 'vuelidate/lib/validators';
 
-//import SimpleKeyboard from ;
 EventLooper.reset();
 EventLooper.start();
-let mySynth = null;
-//import SimpleKeyboard from '~/components/SimpleKeyboard.vue'
-
-//import VModal from 'vue-js-modal';
 
 function ignoreThis(key){
   return [' '].indexOf (key) > -1 ? true : false;
@@ -84,7 +76,6 @@ export default {
           letters: [],
           innerHTML:'',
           innerText:'',
-        //  width:document.width,
           mobile:true
 
 
@@ -104,8 +95,6 @@ export default {
   directives: { observer },
   computed: {
     onfocus: function () {
-
-      // `this` points to the vm instance
       if(this.mobile){
         return ()=>{
             console.log('do something')
@@ -122,7 +111,6 @@ export default {
       if(this.mobile){
         console.log('this is mobile')
       return
-       // 'false'
        'contenteditable'
       }
       else{
@@ -160,7 +148,6 @@ export default {
         buttons: [
           {
             title: 'just touch Me ;)',
-        //    handler: () => { alert('great job! you touched the good button :)') }
           },
           {
             title: 'do not touch',       // Button title
@@ -181,12 +168,10 @@ export default {
         console.log(event.key);
     }},
     keydownEvent(event) {
-      //this.$refs.input.focus();
       console.log('keydownEvent')
       if(!EventLooper.nowPlaying){
         EventLooper.start();
       }
-      //console.log(event)
       console.log(event.key);
       if(event.key.length == 1 && !ignoreThis(event.key)){
         event.preventDefault();
@@ -234,9 +219,6 @@ export default {
             console.log(node.childNodes)
             let toDel = node.childNodes[anchorOffset - 1];
             toDel.parentNode.removeChild(toDel);
-
-            //if(node.parentNode.classList.contains('poemHolder'))
-            //node.parentNode.removeChild(node);
             return;
           }
           if(button == '{ent}'){

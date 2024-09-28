@@ -3,30 +3,21 @@
 
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
-// const dotenv = require('dotenv');
-// dotenv.config(); 
 const DotenvWebpack = require('dotenv-webpack');
 
 module.exports = {
-  chainWebpack (config) {
-    config.mode('development')
-  },
+  chainWebpack: (config) => {
+      config
+      .plugin('env')
+      .use(require.resolve('webpack/lib/EnvironmentPlugin'), 
+      ['FIREBASE_API_KEY', 'FIREBASE_AUTH_DOMAIN', 'FIREBASE_DATABASE_URL', 'FIREBASE_PROJECT_ID', 'FIREBASE_STORAGE_BUCKET', 'FIREBASE_MESSAGING_SENDER_ID', 'FIREBASE_APP_ID'])
+    },
 
   siteName: 'Tone Poems',
   plugins: [
     {
       use: 'gridsome-plugin-tailwindcss',
     },
-    new DotenvWebpack({
-      systemvars: true
-  }),
-
-  /* {
-     use: `gridsome-plugin-netlify-cms`,
-     options: {
-       publicPath: `/admin`
-     }
-   },*/
   ],
   transformers: {
     remark: {
@@ -35,17 +26,6 @@ module.exports = {
       anchorClassName: 'icon icon-link',
       plugins: [
         // ...global plugins
-      ]
-    }
-  },
-  configureWebpack: {
-    // merged with the internal config
-    module: {
-      rules: [
-        {
-          test: /\.(gql|graphql)$/,
-          loader: 'graphql-tag/loader'
-        }
       ]
     }
   }

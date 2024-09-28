@@ -37,7 +37,6 @@
 </Layout>
 </template>
 <script>
-//import VueGoodshare from "vue-goodshare";
 import RecentPoems from '~/components/RecentPoems.vue';
 import EventLooper from '../EventLooper.js';
 import WebSynth from '../webAudioSynth.js';
